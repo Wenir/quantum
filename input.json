@@ -1,0 +1,108 @@
+{
+  "objects": [
+    {
+      "name": "and_1",
+      "type": "AND"
+    },
+    {
+      "name": "and_2",
+      "type": "AND"
+    },
+    {
+      "name": "or",
+      "type": "AND"
+    },
+    {
+      "name": "i_1",
+      "type": "INPUT"
+    },
+    {
+      "name": "i_2",
+      "type": "INPUT"
+    },
+    {
+      "name": "i_3",
+      "type": "INPUT"
+    },
+    {
+      "name": "i_4",
+      "type": "INPUT"
+    },
+    {
+      "name": "o_1",
+      "type": "OUTPUT"
+    }
+  ],
+  "lines": [
+    {
+      "points": [
+        {
+          "name": "i_1.o"
+        },
+        {
+          "name": "and_1.i1"
+        }
+      ]
+    },
+    {
+      "points": [
+        {
+          "name": "i_2.o"
+        },
+        {
+          "name": "and_1.i2"
+        }
+      ]
+    },
+    {
+      "points": [
+        {
+          "name": "i_3.o"
+        },
+        {
+          "name": "and_2.i1"
+        }
+      ]
+    },
+    {
+      "points": [
+        {
+          "name": "i_4.o"
+        },
+        {
+          "name": "and_2.i2"
+        }
+      ]
+    },
+    {
+      "points": [
+        {
+          "name": "and_1.o"
+        },
+        {
+          "name": "or_1.i1"
+        }
+      ]
+    },
+    {
+      "points": [
+        {
+          "name": "and_2.o"
+        },
+        {
+          "name": "or_1.i2"
+        }
+      ]
+    },
+    {
+      "points": [
+        {
+          "name": "or_1.o"
+        },
+        {
+          "name": "o_1.i"
+        }
+      ]
+    }
+  ]
+}
