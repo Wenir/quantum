@@ -9,7 +9,7 @@
       "type": "AND"
     },
     {
-      "name": "or",
+      "name": "or_1",
       "type": "AND"
     },
     {
@@ -37,70 +37,70 @@
     {
       "points": [
         {
-          "name": "i_1.o"
+	      "name": [ "i_1", "i" ]
         },
         {
-          "name": "and_1.i1"
+	      "name": [ "and_1", "i1" ]
         }
       ]
     },
     {
       "points": [
         {
-          "name": "i_2.o"
+	      "name": [ "i_2", "i" ]
         },
         {
-          "name": "and_1.i2"
+	      "name": [ "and_1", "i2" ]
         }
       ]
     },
     {
       "points": [
         {
-          "name": "i_3.o"
+	      "name": [ "i_3", "i" ]
         },
         {
-          "name": "and_2.i1"
+	      "name": [ "and_2", "i1" ]
         }
       ]
     },
     {
       "points": [
         {
-          "name": "i_4.o"
+	      "name": [ "i_4", "i" ]
         },
         {
-          "name": "and_2.i2"
+	      "name": [ "and_2", "i2" ]
         }
       ]
     },
     {
       "points": [
         {
-          "name": "and_1.o"
+	      "name": [ "and_1", "o" ]
         },
         {
-          "name": "or_1.i1"
+	      "name": [ "or_1", "i1" ]
         }
       ]
     },
     {
       "points": [
         {
-          "name": "and_2.o"
+	      "name": [ "and_2", "o" ]
         },
         {
-          "name": "or_1.i2"
+	      "name": [ "or_1", "i2" ]
         }
       ]
     },
     {
       "points": [
         {
-          "name": "or_1.o"
+	      "name": [ "or_1", "o" ]
         },
         {
-          "name": "o_1.i"
+	      "name": [ "o_1", "o" ]
         }
       ]
     }
