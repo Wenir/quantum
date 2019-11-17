@@ -8,28 +8,63 @@
       "name": "and_2",
       "type": "AND"
     },
+
     {
-      "name": "or_1",
-      "type": "AND"
+      "name": "ed_1",
+      "type": "ED"
     },
     {
-      "name": "i_1",
+      "name": "ed_2",
+      "type": "ED"
+    },
+
+    {
+      "name": "rs_1",
+      "type": "RST"
+    },
+    {
+      "name": "rs_2",
+      "type": "RST"
+    },
+    {
+      "name": "rs_3",
+      "type": "RST"
+    },
+    {
+      "name": "rs_4",
+      "type": "RST"
+    },
+
+    {
+      "name": "r_1",
       "type": "INPUT"
     },
     {
-      "name": "i_2",
+      "name": "s_1",
       "type": "INPUT"
     },
     {
-      "name": "i_3",
+      "name": "c_1",
       "type": "INPUT"
     },
     {
-      "name": "i_4",
+      "name": "r_2",
       "type": "INPUT"
     },
     {
-      "name": "o_1",
+      "name": "s_2",
+      "type": "INPUT"
+    },
+    {
+      "name": "c_2",
+      "type": "INPUT"
+    },
+    {
+      "name": "q",
+      "type": "OUTPUT"
+    },
+    {
+      "name": "nq",
       "type": "OUTPUT"
     }
   ],
@@ -37,7 +72,88 @@
     {
       "points": [
         {
-	      "name": [ "i_1", "i" ]
+	      "name": [ "c_1", "i" ]
+        },
+        {
+	      "name": [ "ed_1", "x" ]
+        }
+      ]
+    },
+    {
+      "points": [
+        {
+	      "name": [ "c_2", "i" ]
+        },
+        {
+	      "name": [ "ed_2", "x" ]
+        }
+      ]
+    },
+    {
+      "points": [
+        {
+	      "name": [ "r_1", "i" ]
+        },
+        {
+	      "name": [ "rs_1", "r" ]
+        }
+      ]
+    },
+    {
+      "points": [
+        {
+	      "name": [ "s_1", "i" ]
+        },
+        {
+	      "name": [ "rs_1", "s" ]
+        }
+      ]
+    },
+    {
+      "points": [
+        {
+	      "name": [ "ed_1", "e" ]
+        },
+        {
+	      "name": [ "rs_1", "c" ]
+        }
+      ]
+    },
+    {
+      "points": [
+        {
+	      "name": [ "r_2", "i" ]
+        },
+        {
+	      "name": [ "rs_2", "r" ]
+        }
+      ]
+    },
+    {
+      "points": [
+        {
+	      "name": [ "s_2", "i" ]
+        },
+        {
+	      "name": [ "rs_2", "s" ]
+        }
+      ]
+    },
+    {
+      "points": [
+        {
+	      "name": [ "ed_1", "e" ]
+        },
+        {
+	      "name": [ "rs_2", "c" ]
+        }
+      ]
+    },
+
+    {
+      "points": [
+        {
+	      "name": [ "rs_1", "q" ]
         },
         {
 	      "name": [ "and_1", "i1" ]
@@ -47,7 +163,7 @@
     {
       "points": [
         {
-	      "name": [ "i_2", "i" ]
+	      "name": [ "rs_2", "q" ]
         },
         {
 	      "name": [ "and_1", "i2" ]
@@ -57,7 +173,7 @@
     {
       "points": [
         {
-	      "name": [ "i_3", "i" ]
+	      "name": [ "rs_1", "nq" ]
         },
         {
 	      "name": [ "and_2", "i1" ]
@@ -67,20 +183,31 @@
     {
       "points": [
         {
-	      "name": [ "i_4", "i" ]
+	      "name": [ "rs_2", "nq" ]
         },
         {
 	      "name": [ "and_2", "i2" ]
         }
       ]
     },
+
     {
       "points": [
         {
 	      "name": [ "and_1", "o" ]
         },
         {
-	      "name": [ "or_1", "i1" ]
+	      "name": [ "rs_3", "s" ]
+        }
+      ]
+    },
+    {
+      "points": [
+        {
+	      "name": [ "ed_2", "e" ]
+        },
+        {
+	      "name": [ "rs_3", "c" ]
         }
       ]
     },
@@ -90,17 +217,58 @@
 	      "name": [ "and_2", "o" ]
         },
         {
-	      "name": [ "or_1", "i2" ]
+	      "name": [ "rs_3", "r" ]
         }
       ]
     },
     {
       "points": [
         {
-	      "name": [ "or_1", "o" ]
+	      "name": [ "rs_3", "q" ]
         },
         {
-	      "name": [ "o_1", "o" ]
+	      "name": [ "rs_4", "s" ]
+        }
+      ]
+    },
+    {
+      "points": [
+        {
+	      "name": [ "ed_2", "e" ]
+        },
+        {
+	      "name": [ "rs_4", "c" ]
+        }
+      ]
+    },
+    {
+      "points": [
+        {
+	      "name": [ "rs_3", "nq" ]
+        },
+        {
+	      "name": [ "rs_4", "r" ]
+        }
+      ]
+    },
+
+    {
+      "points": [
+        {
+	      "name": [ "rs_4", "q" ]
+        },
+        {
+	      "name": [ "q", "o" ]
+        }
+      ]
+    },
+    {
+      "points": [
+        {
+	      "name": [ "rs_4", "nq" ]
+        },
+        {
+	      "name": [ "nq", "o" ]
         }
       ]
     }

@@ -1,0 +1,19 @@
+digraph G {
+graph [rankdir = LR];
+node[shape=record];
+and_1[label="{ {<i1>i1|<i2>i2}|and_1|{<o>o} }"];
+and_2[label="{ {<i1>i1|<i2>i2}|and_2|{<o>o} }"];
+or_1[label="{ {<i1>i1|<i2>i2}|or_1|{<o>o} }"];
+i_1[label="{ i_1|{<i>i} }"];
+i_2[label="{ i_2|{<i>i} }"];
+i_3[label="{ i_3|{<i>i} }"];
+i_4[label="{ i_4|{<i>i} }"];
+o_1[label="{ {<o>o}|o_1 }"];
+i_1:i -> and_1:i1[label="i_1:i"];
+i_2:i -> and_1:i2[label="i_2:i"];
+i_3:i -> and_2:i1[label="i_3:i"];
+i_4:i -> and_2:i2[label="i_4:i"];
+and_1:o -> or_1:i1[label="and_1:o"];
+and_2:o -> or_1:i2[label="and_2:o"];
+or_1:o -> o_1:o[label="or_1:o"];
+}
