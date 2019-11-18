@@ -1,5 +1,8 @@
 import json
 import sys
+import tkinter
+import urllib.parse
+import webbrowser
 from enum import Enum
 from pprint import pprint
 
@@ -149,7 +152,20 @@ class SchemaVizuailzer:
             graph += object.name + '[label="{ '
             if object.input_pins:
                 graph += '{' + "|".join(pin(i) for i in object.input_pins) + "}|"
-            graph += object.name
+            graph += object.name + "\\n"
+            if object.type == ObjectType.EdgeDetector:
+                graph += "ED"
+            if object.type == ObjectType.AndGate:
+                graph += "&"
+            if object.type == ObjectType.OrGate:
+                graph += "=1"
+            if object.type == ObjectType.RSTrigger:
+                graph += "RS"
+            if object.type == ObjectType.Port:
+                if object.port_type == PortType.Input:
+                    graph += "IN"
+                if object.port_type == PortType.Output:
+                    graph += "OUT"
             if object.output_pins:
                 graph += '|{' + "|".join(pin(i) for i in object.output_pins) + "}"
             graph += ' }"];\n'
@@ -282,13 +298,104 @@ class Application:
         #print(json)
         schema = SchemaBuilder().build(json)
         #pprint(schema)
-        print(SchemaVizuailzer().vizualize(schema))
+        visualization = SchemaVizuailzer().vizualize(schema)
+        print(visualization)
         deps = DependencyBuilder().build(schema, NamesManager())
 
-        prev_moment = {'ed_1:e':0, 'rs_1:q':0, 'rs_2:q':0, 'rs_1:nq':1, 'rs_2:nq':1, 'and_1:o':0, 'ed_2:e':0, 'and_2:o':0, 'rs_3:q':0, 'rs_3:nq':0, 'rs_4:q':0, 'rs_4:nq':0,\
-                       'c_1:i':0, 'c_2:i':0, 'r_1:i':0, 'r_2:i':0, 's_1:i':0, 's_2:i':0}
-        curr_moment = {'c_1:i':1, 'c_2:i':0, 'r_1:i':0, 'r_2:i':0, 's_1:i':1, 's_2:i':1}
-        #print(self.process(prev_moment, curr_moment, deps))
+        inputs = [i for i in deps.deps if not len(deps.deps[i][0])]
+        inputs_count = len(inputs)
+        columns = [None] + inputs + [i for i in deps.deps if len(deps.deps[i][0])]
+        prev_fields = [None]
+        curr_fields = [None]
+        cell_width=9
+        root = tkinter.Tk()
+        def make_header(root, deps):
+            Ls = tkinter.StringVar()
+            Ls.set("L")
+            L=tkinter.Entry(root, textvariable=Ls, width=cell_width, justify=tkinter.CENTER, state="readonly")
+            L.grid(row=0, column=0)
+            for i in enumerate(columns[1:], 1):
+                es = tkinter.StringVar()
+                e = tkinter.Entry(root, textvariable=es, width=cell_width, justify=tkinter.CENTER, state="readonly")
+                e.grid(row=0, column=i[0])
+                es.set(i[1])
+
+        def make_vals(root, deps):
+            Ls = tkinter.StringVar()
+            Ls.set("M (t-1)")
+            L=tkinter.Entry(root, textvariable=Ls, width=cell_width, justify=tkinter.CENTER, state="readonly")
+            L.grid(row=1, column=0)
+            for i in enumerate(columns[1:], 1):
+                es = tkinter.StringVar()
+                e = tkinter.Entry(root, textvariable=es, width=cell_width, justify=tkinter.CENTER)
+                e.grid(row=1, column=i[0])
+                es.set("0")
+                prev_fields.append(es)
+            Ls = tkinter.StringVar()
+            Ls.set("M (t)")
+            L=tkinter.Entry(root, textvariable=Ls, width=cell_width, justify=tkinter.CENTER, state="readonly")
+            L.grid(row=2, column=0)
+            for i in enumerate(columns[1:], 1):
+                es = tkinter.StringVar()
+                e = tkinter.Entry(root, textvariable=es, width=cell_width, justify=tkinter.CENTER,\
+                                  state="readonly" if i[0] > inputs_count else tkinter.NORMAL)
+                e.grid(row=2, column=i[0])
+                es.set("-" if i[0] > inputs_count else "0")
+                curr_fields.append(es)
+
+        def make_deps(root, deps):
+            Ls = tkinter.StringVar()
+            Ls.set("X")
+            L=tkinter.Entry(root, textvariable=Ls, width=cell_width, justify=tkinter.CENTER, state="readonly")
+            L.grid(row=3, column=0)
+            for i in enumerate(columns[1:], 1):
+                vars = deps[i[1]][0]
+                for j in enumerate(vars):
+                    es = tkinter.StringVar()
+                    e = tkinter.Entry(root, textvariable=es, width=cell_width, justify=tkinter.CENTER, state="readonly")
+                    e.grid(row=3+j[0], column=i[0])
+                    es.set(j[1][0] + " " + ( "(t)" if j[1][1] == TimeMoment.Current else "(t-1)" ))
+
+        def make_vecs(root, deps):
+            base = 3 + max((len(deps[i][0]) for i in deps))
+            Ls = tkinter.StringVar()
+            Ls.set("Q")
+            L=tkinter.Entry(root, textvariable=Ls, width=cell_width, justify=tkinter.CENTER, state="readonly")
+            L.grid(row=base, column=0)
+            for i in enumerate(columns[1:], 1):
+                vec = deps[i[1]][1]
+                for j in enumerate(vec):
+                    es = tkinter.StringVar()
+                    e = tkinter.Entry(root, textvariable=es, width=cell_width, justify=tkinter.CENTER, state="readonly")
+                    e.grid(row=base+j[0], column=i[0])
+                    es.set(j[1])
+
+        make_header(root, deps.deps)
+        make_vals(root, deps.deps)
+        make_deps(root, deps.deps)
+        make_vecs(root, deps.deps)
+
+        def gui_process():
+            prev_moment = dict(((i[1], int(prev_fields[i[0]].get())) for i in enumerate(columns[1:], 1)))
+            curr_moment = dict(((i[1], int(curr_fields[i[0]].get())) for i in enumerate(inputs,1)))
+            res = self.process(prev_moment, curr_moment, deps)
+            for i in enumerate(res, 1):
+                curr_fields[i[0]].set(res[i[1]])
+
+        base = 3 + max((len(deps.deps[i][0]) for i in deps.deps)) + max((len(deps.deps[i][1]) for i in deps.deps))
+
+        button = tkinter.Button(root, text="Process", command=gui_process)
+        button.grid(row=base, column=0)
+
+        link1 = tkinter.Label(root, text="image", fg="blue", cursor="hand2")
+        link1.grid(row=base, column=2)
+        link1.bind("<Button-1>", lambda e: webbrowser.open_new("https://dreampuf.github.io/GraphvizOnline/#" + urllib.parse.quote(visualization)))
+
+        link2 = tkinter.Label(root, text="image2", fg="blue", cursor="hand2")
+        link2.grid(row=base, column=3)
+        link2.bind("<Button-1>", lambda e: webbrowser.open_new("https://edotor.net/"))
+
+        tkinter.mainloop()
 
 
 if __name__ == '__main__':
