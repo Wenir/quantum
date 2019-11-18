@@ -7,8 +7,9 @@ from pprint import pprint
 class ObjectType(Enum):
     EdgeDetector = 1
     AndGate = 2
-    RSTrigger = 3
-    Port = 4
+    OrGate = 3
+    RSTrigger = 4
+    Port = 5
 
 
 class PinType(Enum):
@@ -51,7 +52,7 @@ class Object:
         self.type = type
         self.input_pins = []
         self.output_pins = []
-        if type == ObjectType.AndGate:
+        if type == ObjectType.AndGate or type == ObjectType.OrGate:
             self.input_pins.append(InputPin("i1", self))
             self.input_pins.append(InputPin("i2", self))
             self.output_pins.append(OutputPin("o", self))
@@ -113,6 +114,8 @@ class SchemaBuilder:
                 result.objects[name] = Port(name, PortType.Output)
             if type == "AND":
                 result.objects[name] = Object(name, ObjectType.AndGate)
+            if type == "OR":
+                result.objects[name] = Object(name, ObjectType.OrGate)
             if type == "RST":
                 result.objects[name] = Object(name, ObjectType.RSTrigger)
             if type == "ED":
@@ -218,6 +221,14 @@ class DependencyBuilder:
                                   names.line_name(object.input_pins[1].line), \
                                   TimeMoment.Current))
                 vector = (0, 0, 0, 1)
+            elif object_type == ObjectType.OrGate:
+                variables.append((\
+                                  names.line_name(object.input_pins[0].line), \
+                                  TimeMoment.Current))
+                variables.append((\
+                                  names.line_name(object.input_pins[1].line), \
+                                  TimeMoment.Current))
+                vector = (0, 1, 1, 1)
             elif object_type == ObjectType.RSTrigger:
                 variables.append((\
                                   names.line_name(object.input_pins[0].line), \
